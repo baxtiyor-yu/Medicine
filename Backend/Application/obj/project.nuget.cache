@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "pclX1bbF8OhSyVzAwbzZfwYov4QecHFtqtNROD32MiIGwfUX90S2U0RoyqsHQQOyazsDcdXKSdapAEExKIShsw==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\harhi\\OneDrive\\Рабочий стол\\ggit\\medicine\\Backend\\Application\\Application.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\harhi\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\8.0.1\\microsoft.extensions.dependencyinjection.abstractions.8.0.1.nupkg.sha512"
+  ],
+  "logs": []
+}
