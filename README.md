@@ -9,7 +9,10 @@
 \
 &nbsp;
 ![2222](https://github.com/baxtiyor-yu/Medicine/assets/170466856/1025c5ea-7eda-47d7-be0d-2795360c0978)
-
+\
+&nbsp;
+\
+&nbsp;
 ## Frontend -> Angular.
 ng serve
 ## Backend -> .Net 8.
