@@ -3,7 +3,7 @@
 ![2222](https://github.com/baxtiyor-yu/Medicine/assets/170466856/1025c5ea-7eda-47d7-be0d-2795360c0978)
 
 ## Frontend -> Angular.
-ng-start
+ng serve
 
 ## Backend -> .Net 8.
 dotnet run
