@@ -9,7 +9,7 @@ ng serve
 dotnet run
 
 ### Package Manager -> NuGet.
--Add-Migration FirstMigration
+-Add-Migration FirstMigration  
 -Update-Database
 
 ### Used technologies -> EF, Bootstrap, SCSS.
