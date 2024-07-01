@@ -1,5 +1,5 @@
 # Drug-store APP
-![medimage](https://github.com/baxtiyor-yu/Medicine/assets/170466856/eecd0f12-c99e-4b52-a157-83f9f5f7e99a)
+![medimage](https://github.com/baxtiyor-yu/Medicine/assets/170466856/c0e21967-8154-441f-94d7-3a3464bba8ce)
 \
 &nbsp;
 \
