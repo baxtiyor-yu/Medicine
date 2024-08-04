@@ -1,64 +1,83 @@
 ﻿using Application.AppDTO;
+using Application.Helper;
 using Application.Medicines;
-using Domain.DomainDTO;
 using Domain.Models;
 using Infrastructure.Persistance.MSSqlServer;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 
 namespace Infrastructure.Repositories
 {
     public class MedicineRepository : IMedicineRepository
     {
+      
         private readonly DbContextMSSqlServer _dbContextMSSqlServer;
         public MedicineRepository(DbContextMSSqlServer dbContext)
         {
             _dbContextMSSqlServer = dbContext;
         }
 
-        public async Task<List<MedicineDomainDTO>> GetAllMedicinesAsync()
+        public async Task<PagedMedicinesDTO> GetAllMedicinesAsync(QueryObject query)
         {
-            var allMedicines = await _dbContextMSSqlServer.Medicines
-            .Select(u => new MedicineDomainDTO
+            List<MedicineDTO> allMedicinesdto = [];
+            var skipNumber = (query.currentpage - 1) * query.limit;
+            
+            var allMedicines =  _dbContextMSSqlServer.Medicines.AsQueryable();
+            if (!string.IsNullOrWhiteSpace(query.tradename))
             {
-                MedicineId = u.Id,
-                MedicineTradeName = u.TradeName,
-                MedicineInterName = u.InterName,
-                MedicineImageUrl = u.ImageUrl,
-                MedicineForm = u.Medform,
-                MedicineManufacturer = new ManufacturerDomainDTO
-                {
-                    ManufacturerId = u.Manufacturer.Id,
-                    ManufacturerName = u.Manufacturer.ManufacturerName,
-                    ManufacturerAddress = u.Manufacturer.ManufacturerAddress,
-                    ManufacturerCountry = new CountryDomainDTO
-                    {
-                        CountryId = u.Manufacturer.CountryId,
-                        CountryName = u.Manufacturer.Country.CountryName,
-                    }
-                },
-                MedSubstances = u.MedicineSubstances.Select(s => s.Substance).ToList(),
-                MedDoses = u.DoseMedicines.Select(d => d.Dose).ToList(),
-            }).ToListAsync();
+                allMedicines = allMedicines.Where(q => q.TradeName.Contains(query.tradename));
+            }
 
-            return allMedicines;
+
+            allMedicinesdto = await allMedicines
+                .Select(u => new MedicineDTO
+                {
+                    MedicineId = u.Id,
+                    MedicineTradeName = u.TradeName,
+                    MedicineInterName = u.InterName,
+                    MedicineImageUrl = u.ImageUrl,
+                    MedicineForm = u.Medform,
+                    MedicineManufacturer = new ManufacturerDTO
+                    {
+                        ManufacturerId = u.Manufacturer.Id,
+                        ManufacturerName = u.Manufacturer.ManufacturerName,
+                        ManufacturerAddress = u.Manufacturer.ManufacturerAddress,
+                        ManufacturerCountry = new CountryDTO
+                        {
+                            CountryId = u.Manufacturer.CountryId,
+                            CountryName = u.Manufacturer.Country.CountryName,
+                        }
+                    },
+                    MedSubstances = u.MedicineSubstances.Select(s => s.Substance).ToList(),
+                    MedDoses = u.DoseMedicines.Select(d => d.Dose).ToList(),
+                }).Skip(skipNumber).Take(query.limit).ToListAsync();
+            var pageTotal = Math.Ceiling(allMedicines.Count() / Convert.ToDecimal(query.limit));
+            var PagedMedicines = new PagedMedicinesDTO
+            {
+                PagedMedicines = allMedicinesdto,
+                TotalPages = pageTotal,
+                CurrentPage = query.currentpage
+            };
+            return PagedMedicines;
+           
         }
 
-        public async Task<MedicineDomainDTO?> GetMedicineAsync(int id)
+        public async Task<MedicineDTO?> GetMedicineAsync(int id)
         {
             return await _dbContextMSSqlServer.Medicines.Where(x=> x.Id == id)
-            .Select(u => new MedicineDomainDTO
+            .Select(u => new MedicineDTO
             {
                 MedicineId = u.Id,
                 MedicineTradeName = u.TradeName,
                 MedicineInterName = u.InterName,
                 MedicineImageUrl = u.ImageUrl,
                 MedicineForm = u.Medform,
-                MedicineManufacturer = new ManufacturerDomainDTO
+                MedicineManufacturer = new ManufacturerDTO
                 {
                     ManufacturerId = u.Manufacturer.Id,
                     ManufacturerName = u.Manufacturer.ManufacturerName,
                     ManufacturerAddress = u.Manufacturer.ManufacturerAddress,
-                    ManufacturerCountry = new CountryDomainDTO
+                    ManufacturerCountry = new CountryDTO
                     {
                         CountryId = u.Manufacturer.CountryId,
                         CountryName = u.Manufacturer.Country.CountryName,
@@ -126,8 +145,6 @@ namespace Infrastructure.Repositories
 
             var subs = medicineReqDTO.SubstanceIds;
             var doses = medicineReqDTO.DoseIds;
-            //if (subs == null) return null;
-            //if (doses == null) return null;
 
             _dbContextMSSqlServer.MedicineSubstances.Where(x => x.MedicineId == medicineReqDTO.MedId).ExecuteDelete();
             _dbContextMSSqlServer.DoseMedicines.Where(x => x.MedicineId == medicineReqDTO.MedId).ExecuteDelete();

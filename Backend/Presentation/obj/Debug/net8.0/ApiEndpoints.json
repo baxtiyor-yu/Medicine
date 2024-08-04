@@ -148,6 +148,16 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "Presentation.Controllers.LinqController",
+    "Method": "GetLinq",
+    "RelativePath": "linq",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "Presentation.Controllers.ManufacturerController",
     "Method": "GetAllManufacturers",
     "RelativePath": "manufacturers",
@@ -302,7 +312,23 @@
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
-    "Parameters": [],
+    "Parameters": [
+      {
+        "Name": "tradename",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "currentpage",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "limit",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
     "ReturnTypes": []
   },
   {

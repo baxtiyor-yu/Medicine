@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Domain.Models;
 using Infrastructure.Configurations;
+using Domain.Entity;
+using Microsoft.Extensions.Options;
 
 namespace Infrastructure.Persistance.MSSqlServer
 {
@@ -15,6 +17,8 @@ namespace Infrastructure.Persistance.MSSqlServer
         public DbSet<Medform> Medforms { get; set; }
         public DbSet<DoseMedicine> DoseMedicines { get; set; }
         public DbSet<MedicineSubstance> MedicineSubstances { get; set; }
+        public DbSet<Employee> Employees { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -26,6 +30,17 @@ namespace Infrastructure.Persistance.MSSqlServer
             modelBuilder.ApplyConfiguration(new MedformConfiguration());
             modelBuilder.ApplyConfiguration(new DoseConfiguration());
             modelBuilder.ApplyConfiguration(new SubstanceConfiguration());
+            modelBuilder.ApplyConfiguration(new DepartmentConfiguration());
+            modelBuilder.ApplyConfiguration(new EmployeeConfiguration());
+
+           
+
+            foreach (var property in modelBuilder.Model.GetEntityTypes()
+                .SelectMany(t => t.GetProperties())
+                .Where(p => p.ClrType == typeof(decimal) || p.ClrType == typeof(decimal?)))
+            {
+                property.SetColumnType("decimal(10,2)");
+            }
 
             base.OnModelCreating(modelBuilder);
         }

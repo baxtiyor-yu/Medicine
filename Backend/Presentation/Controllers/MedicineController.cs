@@ -4,6 +4,7 @@ using Domain.Models;
 using Infrastructure.Persistance.MSSqlServer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Application.Helper;
 
 namespace Presentation.Controllers
 {
@@ -21,9 +22,9 @@ namespace Presentation.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllMedicines()
+        public async Task<IActionResult> GetAllMedicines([FromQuery] QueryObject query)
         {
-            var allMedicines = await _medicineService.GetAllMedicinesAsync();
+            var allMedicines = await _medicineService.GetAllMedicinesAsync(query);
             return Ok(allMedicines);
         }
 

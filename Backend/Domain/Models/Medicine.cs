@@ -4,7 +4,7 @@ namespace Domain.Models
     public class Medicine
     {
         public int Id { get; set; }
-        public string? TradeName { get; set; }
+        public required string TradeName { get; set; }
         public string? InterName { get; set; }
         public string? ImageUrl { get; set; }
         public int ManufacturerId { get; set; }
@@ -14,4 +14,5 @@ namespace Domain.Models
         public List<MedicineSubstance> MedicineSubstances { get; set; } = [];
         public List<DoseMedicine> DoseMedicines { get; set; } = [];
     }
+    
 }

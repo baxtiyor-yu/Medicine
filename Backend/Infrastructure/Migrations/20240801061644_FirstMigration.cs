@@ -7,7 +7,7 @@
 namespace Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class ASD : Migration
+    public partial class FirstMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -26,6 +26,20 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Department",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ShortName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LongName = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Department", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Doses",
                 columns: table => new
                 {
@@ -37,6 +51,23 @@ namespace Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Doses", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Employees",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AnnualSalary = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
+                    IsManager = table.Column<bool>(type: "bit", nullable: false),
+                    DepartmentId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Employees", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -93,7 +124,7 @@ namespace Infrastructure.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    TradeName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    TradeName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     InterName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ManufacturerId = table.Column<int>(type: "int", nullable: false),
@@ -175,6 +206,16 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "Department",
+                columns: new[] { "Id", "LongName", "ShortName" },
+                values: new object[,]
+                {
+                    { 1, "Human Resources", "HR" },
+                    { 2, "Finance", "FN" },
+                    { 3, "Technology", "TE" }
+                });
+
+            migrationBuilder.InsertData(
                 table: "Doses",
                 columns: new[] { "Id", "Dosage", "Title" },
                 values: new object[,]
@@ -185,6 +226,17 @@ namespace Infrastructure.Migrations
                     { 4, 100, "мл" },
                     { 5, 200, "мл" },
                     { 6, 300, "мл" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Employees",
+                columns: new[] { "Id", "AnnualSalary", "DepartmentId", "FirstName", "IsManager", "LastName" },
+                values: new object[,]
+                {
+                    { 1, 60000m, 1, "Bob", true, "Jones" },
+                    { 2, 80000m, 2, "Sarah", true, "Jameson" },
+                    { 3, 40000m, 2, "Douglas", false, "Roberts" },
+                    { 4, 30000m, 3, "Jane", false, "Stevens" }
                 });
 
             migrationBuilder.InsertData(
@@ -299,7 +351,13 @@ namespace Infrastructure.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "Department");
+
+            migrationBuilder.DropTable(
                 name: "DoseMedicines");
+
+            migrationBuilder.DropTable(
+                name: "Employees");
 
             migrationBuilder.DropTable(
                 name: "MedicineSubstances");

@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(DbContextMSSqlServer))]
-    [Migration("20240630094821_ASD")]
-    partial class ASD
+    [Migration("20240801061644_FirstMigration")]
+    partial class FirstMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -23,6 +23,111 @@ namespace Infrastructure.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("Domain.Entity.Department", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("LongName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ShortName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Department");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            LongName = "Human Resources",
+                            ShortName = "HR"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            LongName = "Finance",
+                            ShortName = "FN"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            LongName = "Technology",
+                            ShortName = "TE"
+                        });
+                });
+
+            modelBuilder.Entity("Domain.Entity.Employee", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("AnnualSalary")
+                        .HasColumnType("decimal(10,2)");
+
+                    b.Property<int>("DepartmentId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsManager")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Employees");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            AnnualSalary = 60000m,
+                            DepartmentId = 1,
+                            FirstName = "Bob",
+                            IsManager = true,
+                            LastName = "Jones"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            AnnualSalary = 80000m,
+                            DepartmentId = 2,
+                            FirstName = "Sarah",
+                            IsManager = true,
+                            LastName = "Jameson"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            AnnualSalary = 40000m,
+                            DepartmentId = 2,
+                            FirstName = "Douglas",
+                            IsManager = false,
+                            LastName = "Roberts"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            AnnualSalary = 30000m,
+                            DepartmentId = 3,
+                            FirstName = "Jane",
+                            IsManager = false,
+                            LastName = "Stevens"
+                        });
+                });
 
             modelBuilder.Entity("Domain.Models.Country", b =>
                 {
@@ -277,6 +382,7 @@ namespace Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("TradeName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");

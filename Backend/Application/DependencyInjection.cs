@@ -1,5 +1,6 @@
 ﻿using Application.Countries;
 using Application.Doses;
+using Application.Linq;
 using Application.Manufacturers;
 using Application.Medforms;
 using Application.Medicines;
@@ -18,6 +19,7 @@ namespace Application
             services.AddScoped<IMedicineServices, MedicineServices>();
             services.AddScoped<IDoseServices, DoseServices>();
             services.AddScoped<IMedformServices, MedformServices>();
+            //services.AddScoped<ILinqServices, LinqServices>();
 
             return services;
         }

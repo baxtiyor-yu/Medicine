@@ -1,5 +1,5 @@
 ﻿using Application.AppDTO;
-using Domain.DomainDTO;
+using Application.Helper;
 using Domain.Models;
 
 namespace Application.Medicines
@@ -11,11 +11,11 @@ namespace Application.Medicines
         {
             _medicineRepository = medicineRepository;
         }
-        public async Task<List<MedicineDomainDTO>> GetAllMedicinesAsync()
+        public async Task<PagedMedicinesDTO> GetAllMedicinesAsync(QueryObject query)
         {
-            return await _medicineRepository.GetAllMedicinesAsync();
+            return await _medicineRepository.GetAllMedicinesAsync(query);
         }
-        public async Task<MedicineDomainDTO?> GetMedicineByIdAsync(int id)
+        public async Task<MedicineDTO?> GetMedicineByIdAsync(int id)
         {
             return await _medicineRepository.GetMedicineAsync(id);
         }

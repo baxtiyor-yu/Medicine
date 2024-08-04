@@ -4,7 +4,7 @@ namespace Application.AppDTO
     public class MedicineReqDTO
     {
         public int MedId{ get; set; }
-        public string? TradeName { get; set; }
+        public required string TradeName { get; set; }
         public string? InterName { get; set; } 
         public int ManufacturerId { get; set; }
         public int MedFormId { get; set; }

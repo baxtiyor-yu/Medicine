@@ -1,6 +1,7 @@
 ﻿
 using Application.Countries;
 using Application.Doses;
+using Application.Linq;
 using Application.Manufacturers;
 using Application.Medforms;
 using Application.Medicines;
@@ -26,6 +27,7 @@ namespace Infrastructure
             services.AddScoped<ISubstanceRepository, SubstanceRepository>();
             services.AddScoped<IDoseRepository, DoseRepository>();
             services.AddScoped<IMedformRepository, MedformRepository>();
+            //services.AddScoped<ILinqRepository, LinqRepository>();
 
             return services;
         }

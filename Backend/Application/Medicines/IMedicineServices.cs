@@ -1,14 +1,14 @@
 ﻿using Application.AppDTO;
-using Domain.DomainDTO;
+using Application.Helper;
 using Domain.Models;
 
 namespace Application.Medicines
 {
     public interface IMedicineServices
     {
-        Task<List<MedicineDomainDTO>> GetAllMedicinesAsync();
+        Task<PagedMedicinesDTO> GetAllMedicinesAsync(QueryObject query);
 
-        Task<MedicineDomainDTO?> GetMedicineByIdAsync(int id);
+        Task<MedicineDTO?> GetMedicineByIdAsync(int id);
 
         Task<Medicine?> CreateMedicineAsync(MedicineReqDTO medicineReqDTO);
 
